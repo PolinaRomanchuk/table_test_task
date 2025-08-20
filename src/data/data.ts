@@ -5,7 +5,7 @@ export interface DataType {
   date: Date;
 }
 
-export const paymentData: DataType[] = [
+export const initialPaymentData: DataType[] = [
   {
     key: "1",
     name: "Коммунальные услуги",

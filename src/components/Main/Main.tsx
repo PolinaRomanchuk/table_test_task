@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Button, Space, Table, TableProps } from "antd";
-import { paymentData, DataType } from "../../data/data";
+import { DataType } from "../../data/data";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 export const columns: TableProps<DataType>["columns"] = [
@@ -42,9 +42,10 @@ export const columns: TableProps<DataType>["columns"] = [
 
 type MainProps = {
   search: string;
+  paymentData: DataType[];
 };
 
-const Main = ({ search }: MainProps): ReactElement => {
+const Main = ({ search, paymentData }: MainProps): ReactElement => {
   const filteredData = paymentData.filter((item) => {
     const searchLowerCase = search.toLowerCase();
     return (
