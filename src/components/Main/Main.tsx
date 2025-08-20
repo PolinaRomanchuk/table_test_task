@@ -7,12 +7,16 @@ type MainProps = {
   search: string;
   paymentData: DataType[];
   setPaymentData: React.Dispatch<React.SetStateAction<DataType[]>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditingPayment: React.Dispatch<React.SetStateAction<DataType | null>>;
 };
 
 const Main = ({
   search,
   paymentData,
   setPaymentData,
+  setOpenModal,
+  setEditingPayment,
 }: MainProps): ReactElement => {
   const filteredData = paymentData.filter((item) => {
     const searchLowerCase = search.toLowerCase();
@@ -57,7 +61,14 @@ const Main = ({
       render: (_, record) => (
         <>
           <Space>
-            <Button shape="circle" icon={<EditOutlined />} onClick={() => {}} />
+            <Button
+              shape="circle"
+              icon={<EditOutlined />}
+              onClick={() => {
+                setEditingPayment(record);
+                setOpenModal(true);
+              }}
+            />
             <Button
               type="primary"
               shape="circle"

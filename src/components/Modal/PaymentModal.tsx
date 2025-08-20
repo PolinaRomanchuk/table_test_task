@@ -1,12 +1,15 @@
-import { DatePicker, Form, FormProps, Input, Modal } from "antd";
-import { ReactElement } from "react";
+import { DatePicker, Form, FormProps, Input, Modal, notification } from "antd";
+import { ReactElement, useEffect } from "react";
 import type { Dayjs } from "dayjs";
 import { DataType } from "../../data/data";
+import dayjs from "dayjs";
 
 type PaymentModalProps = {
   open: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   onSave: (payment: DataType) => void;
+  editingPayment?: DataType | null;
+  setEditingPayment: React.Dispatch<React.SetStateAction<DataType | null>>;
 };
 
 type FieldType = {
@@ -15,37 +18,65 @@ type FieldType = {
   date: Dayjs;
 };
 
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-  errorInfo
-) => {};
-
 const PaymentModal = ({
   open,
   setOpenModal,
   onSave,
+  editingPayment,
+  setEditingPayment,
 }: PaymentModalProps): ReactElement => {
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
 
   const handleFinish = (values: FieldType) => {
-    onSave({
-      key: Date.now().toString(),
+    const payment: DataType = {
+      key: editingPayment ? editingPayment.key : Date.now().toString(),
       name: values.name,
       money: values.money,
       date: values.date.toDate(),
-    });
+    };
+    onSave(payment);
     setOpenModal(false);
     form.resetFields();
+    api.success({
+      message: "Успех",
+      description: editingPayment
+        ? "Платеж успешно обновлен"
+        : "Платеж успешно создан",
+    });
   };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {
+    api.error({
+      message: "Ошибка",
+      description: "Что-то пошло не так",
+    });
+  };
+
+  useEffect(() => {
+    if (editingPayment) {
+      form.setFieldsValue({
+        name: editingPayment.name,
+        money: editingPayment.money,
+        date: editingPayment.date ? dayjs(editingPayment.date) : null,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [editingPayment, form, open]);
 
   return (
     <>
+      {contextHolder}
       <Modal
         open={open}
-        title="Новый платеж"
+        title={editingPayment ? "Редактировать платеж" : "Новый платеж"}
         onCancel={() => {
           setOpenModal(false);
+          setEditingPayment(null);
+          form.resetFields();
         }}
-        okText="Создать"
+        okText={editingPayment ? "Сохранить" : "Создать"}
         cancelText="Отмена"
         onOk={() => {
           form.submit();
@@ -57,7 +88,7 @@ const PaymentModal = ({
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 20 }}
           style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
+          initialValues={{ remember: false }}
           onFinish={handleFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"

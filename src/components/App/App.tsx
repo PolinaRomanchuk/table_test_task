@@ -10,6 +10,7 @@ export const App = (): ReactElement => {
   const [openModal, setOpenModal] = useState(false);
   const [paymentData, setPaymentData] =
     useState<DataType[]>(initialPaymentData);
+  const [editingPayment, setEditingPayment] = useState<DataType | null>(null);
 
   return (
     <>
@@ -22,12 +23,29 @@ export const App = (): ReactElement => {
         Добавить новый платеж
       </Button>
       <PaymentSearch search={search} setSearch={setSearch} />
-      <Main search={search} paymentData={paymentData} setPaymentData={setPaymentData}/>
+      <Main
+        search={search}
+        paymentData={paymentData}
+        setPaymentData={setPaymentData}
+        setEditingPayment={setEditingPayment}
+        setOpenModal={setOpenModal}
+      />
 
       <PaymentModal
         open={openModal}
         setOpenModal={setOpenModal}
-        onSave={(payment) => setPaymentData([...paymentData, payment])}
+        editingPayment={editingPayment}
+        onSave={(payment) => {
+          if (editingPayment) {
+            setPaymentData((prev) =>
+              prev.map((p) => (p.key === payment.key ? payment : p))
+            );
+            setEditingPayment(null);
+          } else {
+            setPaymentData([...paymentData, payment]);
+          }
+        }}
+        setEditingPayment={setEditingPayment}
       />
     </>
   );
