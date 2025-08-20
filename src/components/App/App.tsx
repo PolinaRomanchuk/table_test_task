@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import Main from "../Main/Main";
 import PaymentSearch from "../Search/PaymentSearch";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import PaymentModal from "../Modal/PaymentModal";
 import { DataType, initialPaymentData } from "../../data/data";
 
@@ -14,23 +14,24 @@ export const App = (): ReactElement => {
 
   return (
     <>
-      <Button
-        type="primary"
-        onClick={() => {
-          setOpenModal(true);
-        }}
-      >
-        Добавить новый платеж
-      </Button>
-      <PaymentSearch search={search} setSearch={setSearch} />
-      <Main
-        search={search}
-        paymentData={paymentData}
-        setPaymentData={setPaymentData}
-        setEditingPayment={setEditingPayment}
-        setOpenModal={setOpenModal}
-      />
-
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setOpenModal(true);
+          }}
+        >
+          Добавить новый платеж
+        </Button>
+        <PaymentSearch search={search} setSearch={setSearch} />
+        <Main
+          search={search}
+          paymentData={paymentData}
+          setPaymentData={setPaymentData}
+          setEditingPayment={setEditingPayment}
+          setOpenModal={setOpenModal}
+        />
+      </Space>
       <PaymentModal
         open={openModal}
         setOpenModal={setOpenModal}

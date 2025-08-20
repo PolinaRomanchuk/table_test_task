@@ -1,4 +1,12 @@
-import { DatePicker, Form, FormProps, Input, Modal, notification } from "antd";
+import {
+  DatePicker,
+  Form,
+  FormProps,
+  Input,
+  Modal,
+  notification,
+  Space,
+} from "antd";
 import { ReactElement, useEffect } from "react";
 import type { Dayjs } from "dayjs";
 import { DataType } from "../../data/data";
@@ -81,17 +89,18 @@ const PaymentModal = ({
         onOk={() => {
           form.submit();
         }}
+        centered
       >
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 10 }}
+          labelCol={{ span: 8 }}
           wrapperCol={{ span: 20 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: false }}
           onFinish={handleFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
+          style={{ maxWidth: 400, margin: "0 auto" }}
         >
           <Form.Item<FieldType>
             label="Платеж"
