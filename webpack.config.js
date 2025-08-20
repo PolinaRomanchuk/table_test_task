@@ -13,7 +13,7 @@ export default {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: '/',
+    publicPath: './',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
