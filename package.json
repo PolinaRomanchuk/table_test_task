@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/PolinaRomanchuk/table_test_task#readme",
   "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "antd": "^5.27.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

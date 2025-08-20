@@ -1,11 +1,10 @@
 import { ReactElement } from "react";
-import Image from "../../assets/test.jpg";
+import Main from "../Main/Main";
 
 export const App = (): ReactElement => {
   return (
     <>
-      Hello
-      <img src={Image} alt="cat"/>
+      <Main />
     </>
   );
 };
