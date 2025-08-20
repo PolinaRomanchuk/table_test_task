@@ -13,7 +13,7 @@ export default {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: './',
+    publicPath: '/table_test_task/',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
@@ -63,6 +63,7 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+      publicPath: '/table_test_task/',
     }),
     new CopyPlugin({
       patterns: [
