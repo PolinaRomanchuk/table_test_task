@@ -3,49 +3,17 @@ import { Button, Space, Table, TableProps } from "antd";
 import { DataType } from "../../data/data";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-export const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Платеж",
-    dataIndex: "name",
-    key: "name",
-    sorter: (a, b) => a.name.localeCompare(b.name, "ru"),
-    sortDirections: ["ascend", "descend"],
-  },
-  {
-    title: "Сумма (BYN)",
-    dataIndex: "money",
-    key: "money",
-    sorter: (a, b) => a.money - b.money,
-    sortDirections: ["ascend", "descend"],
-  },
-  {
-    title: "Дата платежа",
-    dataIndex: "date",
-    key: "date",
-    sorter: (a, b) => a.date.getTime() - b.date.getTime(),
-    sortDirections: ["ascend", "descend"],
-    render: (date: Date) => date.toLocaleDateString("ru-RU"),
-  },
-  {
-    title: "Действия",
-    key: "action",
-    render: () => (
-      <>
-        <Space>
-          <Button shape="circle" icon={<EditOutlined />} />
-          <Button type="primary" shape="circle" icon={<DeleteOutlined />} />
-        </Space>
-      </>
-    ),
-  },
-];
-
 type MainProps = {
   search: string;
   paymentData: DataType[];
+  setPaymentData: React.Dispatch<React.SetStateAction<DataType[]>>;
 };
 
-const Main = ({ search, paymentData }: MainProps): ReactElement => {
+const Main = ({
+  search,
+  paymentData,
+  setPaymentData,
+}: MainProps): ReactElement => {
   const filteredData = paymentData.filter((item) => {
     const searchLowerCase = search.toLowerCase();
     return (
@@ -54,6 +22,55 @@ const Main = ({ search, paymentData }: MainProps): ReactElement => {
       item.date.toLocaleDateString("ru-RU").includes(searchLowerCase)
     );
   });
+
+  function handleDelete(key: string) {
+    const newPaymentData = paymentData.filter((item) => item.key !== key);
+    setPaymentData(newPaymentData);
+  }
+
+  const columns: TableProps<DataType>["columns"] = [
+    {
+      title: "Платеж",
+      dataIndex: "name",
+      key: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name, "ru"),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: "Сумма (BYN)",
+      dataIndex: "money",
+      key: "money",
+      sorter: (a, b) => a.money - b.money,
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: "Дата платежа",
+      dataIndex: "date",
+      key: "date",
+      sorter: (a, b) => a.date.getTime() - b.date.getTime(),
+      sortDirections: ["ascend", "descend"],
+      render: (date: Date) => date.toLocaleDateString("ru-RU"),
+    },
+    {
+      title: "Действия",
+      key: "action",
+      render: (_, record) => (
+        <>
+          <Space>
+            <Button shape="circle" icon={<EditOutlined />} onClick={() => {}} />
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<DeleteOutlined />}
+              onClick={() => {
+                handleDelete(record.key);
+              }}
+            />
+          </Space>
+        </>
+      ),
+    },
+  ];
 
   return (
     <>

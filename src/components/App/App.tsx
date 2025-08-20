@@ -22,7 +22,7 @@ export const App = (): ReactElement => {
         Добавить новый платеж
       </Button>
       <PaymentSearch search={search} setSearch={setSearch} />
-      <Main search={search} paymentData={paymentData} />
+      <Main search={search} paymentData={paymentData} setPaymentData={setPaymentData}/>
 
       <PaymentModal
         open={openModal}
