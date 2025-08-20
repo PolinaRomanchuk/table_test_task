@@ -40,12 +40,25 @@ export const columns: TableProps<DataType>["columns"] = [
   },
 ];
 
-const Main = (): ReactElement => {
+type MainProps = {
+  search: string;
+};
+
+const Main = ({ search }: MainProps): ReactElement => {
+  const filteredData = paymentData.filter((item) => {
+    const searchLowerCase = search.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(searchLowerCase) ||
+      item.money.toString().includes(searchLowerCase) ||
+      item.date.toLocaleDateString("ru-RU").includes(searchLowerCase)
+    );
+  });
+
   return (
     <>
       <Table<DataType>
         columns={columns}
-        dataSource={paymentData}
+        dataSource={filteredData}
         pagination={false}
         showSorterTooltip={{
           target: "sorter-icon",
